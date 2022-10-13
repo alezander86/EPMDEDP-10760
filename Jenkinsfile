@@ -7,7 +7,7 @@ pipeline {
               spec:
                 containers:
                 - name: hadolint
-                  image: hadolint/hadolint:a6a398942a8a28e5a34d9f680712d1554af999e6-alpine-arm64
+                  image: hadolint/hadolint:a6a398942a8a28e5a34d9f680712d1554af999e6-debian-amd64
                   imagePullPolicy: Always
                   command:
                   - cat
