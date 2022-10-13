@@ -19,8 +19,7 @@ pipeline {
             steps {
                 container('sonar')
                     sh 'which sonar-scanner'
-                }
             }
-        }
+        }       
     }
 }
