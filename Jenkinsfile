@@ -19,7 +19,6 @@ pipeline {
         stage('lint dockerfile') {
             steps {
                 container('hadolint') {
-                    sh 'ls -la'
                     sh 'hadolint dockerfile/* | tee -a hadolint_lint.txt'
                 }
             }
