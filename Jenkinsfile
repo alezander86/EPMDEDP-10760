@@ -20,7 +20,7 @@ pipeline {
             steps {
                 container('hadolint') {
                     sh 'ls -la'
-                    sh 'hadolint dockerfiles/* | tee -a hadolint_lint.txt'
+                    sh 'hadolint * | tee -a hadolint_lint.txt'
                 }
             }
             post {
