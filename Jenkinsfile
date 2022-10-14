@@ -18,7 +18,7 @@ pipeline {
     stages {
         stage('Checkout'){
             steps {
-                git branch: 'main', url: 'https://github.com/alezander/python_app_10760.git'
+                git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
             }
         }         
         stage('lint dockerfile') {
