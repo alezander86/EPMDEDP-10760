@@ -28,7 +28,7 @@ pipeline {
                 container('hadolint') {
                     sh 'pwd'
                     sh 'ls -la'
-                    sh 'hadolint dockerfile/* | tee -a hadolint_lint.txt'
+                    sh 'hadolint Dockerfile | tee -a hadolint_lint.txt'
                 }
             }
             post {
