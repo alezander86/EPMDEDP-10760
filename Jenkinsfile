@@ -19,11 +19,15 @@ pipeline {
         stage('Checkout'){
             steps {
                 git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
+                sh 'pwd'
+                sh 'ls -la'
             }
         }         
         stage('lint dockerfile') {
             steps {
                 container('hadolint') {
+                    sh 'pwd'
+                    sh 'ls -la'
                     sh 'hadolint dockerfile/* | tee -a hadolint_lint.txt'
                 }
             }
