@@ -42,7 +42,7 @@ pipeline {
                     sh 'pwd'
                     sh '''#!/busybox/sh
                       echo "FROM jenkins/inbound-agent:latest" > Dockerfile
-                      /kaniko/executor --context `pwd` --destination alezander/python_app:latest
+                      /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${image_tag}
                     '''
                 }
             }
