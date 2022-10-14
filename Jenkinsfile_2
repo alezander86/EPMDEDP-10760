@@ -1,3 +1,5 @@
+properties([parameters([string(defaultValue: '1.0.0', name: 'image_version')])])
+
 pipeline {
     agent {
         kubernetes {
@@ -15,11 +17,22 @@ pipeline {
         }
     }
     stages {
-        stage('Checkout_the_source_code_sonar') {
+        stage('Checkout'){
             steps {
-                container('sonar')
-                    sh 'which sonar-scanner'
+                git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
             }
-        }       
+        }         
+        stage('Build docker') {
+            steps {
+                container('hadolint') {
+                    sh 'hadolint Dockerfile | tee -a hadolint_lint.txt'
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts 'hadolint_lint.txt'
+                }
+            }
+        }
     }
 }
