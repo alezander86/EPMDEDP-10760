@@ -1,19 +1,32 @@
-properties([parameters([string(defaultValue: '1.0.0', name: 'image_version')])])
+properties([parameters([string(defaultValue: '1.0.0', name: 'image_tag')])])
 
 pipeline {
     agent {
         kubernetes {
-            yaml '''
-              apiVersion: v1
-              kind: Pod
-              spec:
-                containers:
-                - name: sonar
-                  image: sonarsource/sonar-scanner-cli:4
-                  command:
-                  - cat
-                  tty: true
-              '''
+            yaml """
+                kind: Pod
+                spec:
+                  containers:
+                  - name: kaniko
+                    image: gcr.io/kaniko-project/executor:debug
+                    imagePullPolicy: Always
+                    command:
+                    - sleep
+                    args:
+                    - 9999999
+                    volumeMounts:
+                      - name: jenkins-docker-cfg
+                        mountPath: /kaniko/.docker
+                  volumes:
+                  - name: jenkins-docker-cfg
+                    projected:
+                      sources:
+                      - secret:
+                          name: docker-credentials
+                          items:
+                            - key: .dockerconfigjson
+                              path: config.json
+            """
         }
     }
     stages {
@@ -22,15 +35,13 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
             }
         }         
-        stage('Build docker') {
+        stage('Build with Kaniko') {
             steps {
-                container('hadolint') {
-                    sh 'hadolint Dockerfile | tee -a hadolint_lint.txt'
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts 'hadolint_lint.txt'
+                container(name: 'kaniko', shell: '/busybox/sh') {
+                    sh '''#!/busybox/sh
+                      echo "FROM jenkins/inbound-agent:latest" > Dockerfile
+                      /kaniko/executor --context `pwd` --destination alezander/python_app:1.0.1 --destination alezander/python_app:latest
+                    '''
                 }
             }
         }
