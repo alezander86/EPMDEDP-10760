@@ -22,7 +22,7 @@ pipeline {
                     projected:
                       sources:
                       - secret:
-                          name: secret-dockercfg2
+                          name: docker-credentials
                           items:
                             - key: .dockerconfigjson
                               path: config.json
