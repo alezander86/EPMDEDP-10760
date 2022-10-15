@@ -37,7 +37,7 @@ pipeline {
         }
     }
     stages {
-        stage('Checkout'){
+        stage('Checkout_python_app'){
             steps {
               git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
             }
@@ -52,10 +52,15 @@ pipeline {
                 }
             }
         }
+        stage('Checkout_helm'){
+            steps {
+              git branch: 'main', url: 'https://github.com/alezander86/10760.git'
+            }
+        }         
         stage('test') {
             steps {
                 container(name: 'helm'){
-                    sh 'helm'
+                    sh 'ls -la'
                 }
             }          
         }
