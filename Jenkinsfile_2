@@ -54,7 +54,7 @@ pipeline {
         }
         stage('Checkout_helm'){
             steps {
-                sh 'find / -name helm'
+                sh 'ls -la'
             }
         }         
         stage('test') {
