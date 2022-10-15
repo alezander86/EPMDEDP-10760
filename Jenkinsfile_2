@@ -3,36 +3,8 @@ properties([parameters([string(defaultValue: '1.0.0', name: 'image_tag')])])
 pipeline {
     agent {
         kubernetes {
-            yaml """
-                kind: Pod
-                spec:
-                  containers:
-                  - name: kaniko
-                    image: gcr.io/kaniko-project/executor:debug
-                    imagePullPolicy: Always
-                    command:
-                    - sleep
-                    args:
-                    - 9999999
-                    volumeMounts:
-                      - name: jenkins-docker-cfg
-                        mountPath: /kaniko/.docker
-                  volumes:
-                  - name: jenkins-docker-cfg
-                    projected:
-                      sources:
-                      - secret:
-                          name: docker-credentials
-                          items:
-                            - key: .dockerconfigjson
-                              path: config.json
-                kind: Pod
-                spec:
-                  containers:
-                  - name: helm
-                    image: panzouh/helm:3.7.1
-                    imagePullPolicy: Always
-            """
+            container 'kaniko'
+            yamlFile 'pod_template/kaniko.yaml'
         }
     }
     stages {
@@ -53,10 +25,9 @@ pipeline {
         }
         stage('test') {
             steps {
-                container(name: 'helm'){
+//                container(name: 'helm'){
                     sh 'ls -la'
-
-                }
+//                }
             }          
         }
     }
