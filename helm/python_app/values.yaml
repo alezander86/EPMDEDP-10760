@@ -1,0 +1,5 @@
+image:
+  repo: alezander
+  name: python_app
+  version: 1.0.0
+replicas: 1

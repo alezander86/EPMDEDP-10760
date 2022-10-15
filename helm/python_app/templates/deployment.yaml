@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python_app
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: python_app
+  template: 
+    metadata:
+      labels:
+        app: python_app
+    spec:
+      containers:
+      - name: python_app
+#        image: "{{ .Values.image.repo}}/{{ .Values.image.name}}:{{ .Chart.AppVersion }}"
+        image: "alezander/python_app:1.10.2"
+        ports:
+          - name: http-port
+            containerPort: 5000
