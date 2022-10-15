@@ -60,7 +60,7 @@ pipeline {
         stage('test') {
             steps {
                 container(name: 'helm'){
-                      git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
+                      git branch: 'main', url: 'https://github.com/alezander86/EPMDEDP-10760.git'
                       sh 'ls -la'
                 }
             }          
