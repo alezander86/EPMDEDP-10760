@@ -1,28 +1,59 @@
 properties([parameters([string(defaultValue: '1.0.0', name: 'image_tag')])])
 
-podTemplate(label: 'demo-customer-pod', cloud: 'kubernetes', serviceAccount: 'jenkins',
-  containers: [
-    containerTemplate(name: "kaniko", image:"gcr.io/kaniko-project/executor:debug",  ttyEnabled: true, command: "/busybox/cat"),
-],
-volumes: [
-   secretVolume(mountPath: '/root/.docker/', secretName: 'docker-credentials')
-]) {
-    node('demo-customer-pod') {
-        stage('Checkout') {
-              git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
+pipeline {
+    agent {
+        kubernetes {
+            yaml """
+                kind: Pod
+                spec:
+                  containers:
+                  - name: kaniko
+                    image: gcr.io/kaniko-project/executor:debug
+                    imagePullPolicy: Always
+                    command:
+                    - sleep
+                    args:
+                    - 9999999
+                    volumeMounts:
+                      - name: jenkins-docker-cfg
+                        mountPath: /kaniko/.docker
+                  volumes:
+                  - name: jenkins-docker-cfg
+                    projected:
+                      sources:
+                      - secret:
+                          name: docker-credentials
+                          items:
+                            - key: .dockerconfigjson
+                              path: config.json
+                  - name: helm
+                    image: panzouh/helm:3.7.1
+                    imagePullPolicy: Always
+            """
         }
+    }
+    stages {
+        stage('Checkout'){
+            steps {
+              git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
+            }
+        }         
         stage('Build with Kaniko') {
-            container(name: 'kaniko', shell: '/busybox/sh') {
-                sh '''#!/busybox/sh
-                  echo "FROM jenkins/inbound-agent:latest" > Dockerfile
-                  /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${image_tag}
-                '''
-            }        
+            steps {
+                container(name: 'kaniko', shell: '/busybox/sh') {
+                    sh '''#!/busybox/sh
+                      echo "FROM jenkins/inbound-agent:latest" > Dockerfile
+                      /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${image_tag}
+                    '''
+                }
+            }
         }
         stage('test') {
-//                container(name: 'helm'){
+            steps {
+                container(name: 'helm'){
                     sh 'ls -la'
-//                }    
+                }
+            }          
         }
     }
 }
