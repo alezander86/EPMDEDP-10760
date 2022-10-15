@@ -53,9 +53,11 @@ pipeline {
         }
         stage('test') {
             steps {
-              container(name: 'helm')
-                sh 'ls -la'
-            }
-        }          
+                container(name: 'helm'){
+                    sh 'ls -la'
+
+                }
+           }          
+        }
     }
 }
