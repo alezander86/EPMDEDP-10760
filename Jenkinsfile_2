@@ -26,6 +26,12 @@ pipeline {
                           items:
                             - key: .dockerconfigjson
                               path: config.json
+                kind: Pod
+                spec:
+                  containers:
+                  - name: helm
+                    image: panzouh/helm:3.7.1
+                    imagePullPolicy: Always
             """
         }
     }
@@ -47,9 +53,8 @@ pipeline {
         }
         stage('test') {
             steps {
-                sh 'kubectl'
-                sh 'helm'
-                sh 'helm cm-push'
+              container(name: 'helm')
+                sh 'ls -la'
             }
         }          
     }
