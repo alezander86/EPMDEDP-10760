@@ -37,7 +37,7 @@ pipeline {
     stages {
         stage('Checkout'){
             steps {
-                git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
+              git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
             }
         }         
         stage('Build with Kaniko') {
@@ -49,13 +49,12 @@ pipeline {
                     '''
                 }
             }
+        }
         stage('test') {
-          steps {
-            sh 'helm'
-            sh 'helm cm-push'
-          }
-        }
-            
-        }
+            steps {
+                sh 'helm'
+                sh 'helm cm-push'
+            }
+        }          
     }
 }
