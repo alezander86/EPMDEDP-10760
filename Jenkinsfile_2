@@ -26,11 +26,6 @@ pipeline {
                           items:
                             - key: .dockerconfigjson
                               path: config.json
-                kind: Pod
-                spec:
-                  containers: helm
-                    image: gcr.io/kaniko-project/executor:debug
-                    imagePullPolicy: Always
             """
         }
     }
