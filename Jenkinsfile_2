@@ -52,6 +52,8 @@ pipeline {
                 }
             }
         }
+    }
+    stages {
         stage('Checkout_helm'){
             steps {
               git branch: 'main', url: 'https://github.com/alezander86/EPMDEDP-10760.git'
