@@ -61,7 +61,7 @@ pipeline {
                           sh '''
                               ls -la
                               helm repo add python_app http://my-chartmuseum:8080/
-                              helm package python_app --app-version ${image_tag --version 1.2.1
+                              helm package python_app --app-version ${image_tag} --version 1.2.1
                               curl --data-binary "@python_app-${helm_version}.tgz" http://my-chartmuseum:8080/api/charts
                           '''
                       }
