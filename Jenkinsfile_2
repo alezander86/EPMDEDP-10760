@@ -3,7 +3,10 @@ properties([parameters([string(defaultValue: '1.0.0', name: 'image_tag')])])
 podTemplate(label: 'demo-customer-pod', cloud: 'kubernetes', serviceAccount: 'jenkins',
   containers: [
     containerTemplate(name: "kaniko", image:"gcr.io/kaniko-project/executor:debug",  ttyEnabled: true, command: "/busybox/cat"),
-  ]) {
+],
+volumes: [
+   secretVolume(mountPath: '/root/.docker/', secretName: 'docker-credentials')
+]) {
     node('demo-customer-pod') {
         stage('Checkout') {
               git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
