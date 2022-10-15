@@ -9,21 +9,17 @@ podTemplate(label: 'demo-customer-pod', cloud: 'kubernetes', serviceAccount: 'je
               git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
         }
         stage('Build with Kaniko') {
-            steps {
-                container(name: 'kaniko', shell: '/busybox/sh') {
-                    sh '''#!/busybox/sh
-                      echo "FROM jenkins/inbound-agent:latest" > Dockerfile
-                      /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${image_tag}
-                    '''
-                }
-            }
+            container(name: 'kaniko', shell: '/busybox/sh') {
+                sh '''#!/busybox/sh
+                  echo "FROM jenkins/inbound-agent:latest" > Dockerfile
+                  /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${image_tag}
+                '''
+            }        
         }
         stage('test') {
-            steps {
 //                container(name: 'helm'){
                     sh 'ls -la'
-//                }
-            }          
+//                }    
         }
     }
 }
