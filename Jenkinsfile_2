@@ -60,9 +60,8 @@ pipeline {
                       dir('helm'){
                           sh '''
                               ls -la
-                              helm repo add python_app http://my-chartmuseum:8080/
-                              helm init
-                              helm cm-push python_app/ --version="1.2.3" my-chartmuseum
+                              helm repo add chartmuseum http://my-chartmuseum:8080/
+                              helm cm-push python_app/ --version="1.2.3" chartmuseum
                           '''
                       }
                 }
