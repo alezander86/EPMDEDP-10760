@@ -19,7 +19,11 @@ pipeline {
                         mountPath: /kaniko/.docker
                   - name: helm
                     image: panzouh/helm:3.7.1
-                    imagePullPolicy: Always  
+                    imagePullPolicy: Always 
+                    command:
+                    - sleep
+                    args:
+                    - 9999999
                   volumes:
                   - name: jenkins-docker-cfg
                     projected:
