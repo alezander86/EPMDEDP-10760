@@ -57,7 +57,7 @@ pipeline {
                     sh 'ls -la'
 
                 }
-           }          
+            }          
         }
     }
 }
