@@ -1,18 +1,13 @@
 properties([parameters([string(defaultValue: '1.0.0', name: 'image_tag')])])
 
-pipeline {
-    agent {
-        kubernetes {
-            container 'kaniko'
-            yamlFile 'pod_template/kaniko.yaml'
-        }
-    }
-    stages {
-        stage('Checkout'){
-            steps {
+podTemplate(label: 'demo-customer-pod', cloud: 'kubernetes', serviceAccount: 'jenkins',
+  containers: [
+    containerTemplate(name: "kaniko", image:"gcr.io/kaniko-project/executor:debug",  ttyEnabled: true, command: "/busybox/cat"),
+  ]) {
+    node('demo-customer-pod') {
+        stage('Checkout') {
               git branch: 'main', url: 'https://github.com/alezander86/python_app_10760.git'
-            }
-        }         
+        }
         stage('Build with Kaniko') {
             steps {
                 container(name: 'kaniko', shell: '/busybox/sh') {
