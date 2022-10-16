@@ -6,31 +6,26 @@
 
 pipeline {
     agent {
-//        kubernetes {
-//            yaml """
-//              kind: Pod
-//              metadata:
-//                labels:
-//                    label: somelabel
-//              spec:
-//                containers:
-//                - name: helm
-//                  image: panzouh/helm:3.7.1
-//                  imagePullPolicy: Always 
-//                  command:
-//                  - sleep
-//                  args:
-//                  - 9999999
-//                """
-//        }
-label 'helm'
+        kubernetes {
+            yaml """
+              kind: Pod
+              metadata:
+                labels:
+                    label: somelabel
+              spec:
+                containers:
+                - name: helm
+                  image: panzouh/helm:3.7.1
+                  imagePullPolicy: Always 
+                  command:
+                  - sleep
+                  args:
+                  - 9999999
+                """
+        }
     }    
-//    agent {	
-//        kubernetes {
-//		    label 'somelabel'
-//        }
-//    }
     stages {
+        container(name: 'helm'){
             stage('Add chartmuseum') {
                 steps {
                     sh '''
@@ -39,10 +34,6 @@ label 'helm'
                       helm repo update
                       helm repo list
                     '''
-                }
-            }
-            stage('Helmchart') {
-                steps {
                     script {
                         if(params.ENV_CHOICE == "prod"){
                             sh 'helm upgrade --install test ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
@@ -53,5 +44,5 @@ label 'helm'
                 }
             }          
         }
-    
+    }
 }
