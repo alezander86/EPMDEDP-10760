@@ -19,7 +19,6 @@ pipeline {
         }
     }    
     stages {
-        container(name: 'helm'){
             stage('Add chartmuseum') {
                 steps {
                     sh '''
@@ -33,9 +32,9 @@ pipeline {
                 steps {
                     script {
                         if(params.ENV_CHOICE == "prod"){
-                            sh 'helm upgrade --install test ${PROJECT_NAME}/pythonapp -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
+                            sh 'helm upgrade --install test ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
                         }else if (params.ENV_CHOICE == "dev") {
-                            sh 'helm upgrade --install test ${PROJECT_NAME}/pythonapp -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
+                            sh 'helm upgrade --install test ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
                         }
                     }
                 }
