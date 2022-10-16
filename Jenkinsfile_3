@@ -1,9 +1,8 @@
-    properties(
-        [parameters([choice(choices: ['prod', 'dev'], name: 'ENV_CHOICE'),
-                    string(defaultValue: '1.0.0', name: 'HELM_CHART_VERSION'),
-                    string(defaultValue: 'chartmuseum', name: 'CHARTMUSEUM_NAME'),
-                    string(defaultValue: 'pythonapp', name: 'PROJECT_NAME')
-        ])])
+    properties([parameters([choice(choices: ['prod', 'dev'], name: 'ENV_CHOICE'),
+                            string(defaultValue: '1.0.0', name: 'HELM_CHART_VERSION'),
+                            string(defaultValue: 'chartmuseum', name: 'CHARTMUSEUM_NAME'),
+                            string(defaultValue: 'pythonapp', name: 'PROJECT_NAME')
+               ])])
 
 pipeline {
     agent {
@@ -18,7 +17,7 @@ pipeline {
                   - 9999999
                 """
     stages {
-        stage('test') {
+        stage('Deploy_helm_chart') {
             steps {
                 container(name: 'helm'){
                     dir('helm'){
