@@ -55,7 +55,7 @@ pipeline {
             }
         }
         stage('test') {
-            steps {
+            .steps {
                 container(name: 'helm'){
                       git branch: 'main', url: 'https://github.com/alezander86/EPMDEDP-10760.git'
                       dir('helm'){

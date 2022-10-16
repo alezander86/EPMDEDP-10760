@@ -17,22 +17,25 @@ pipeline {
                   - 9999999
                 """
     stages {
-        stage('Deploy_helm_chart') {
-            steps {
-                container(name: 'helm'){
-                    dir('helm'){
-                            sh '''
-                              helm repo add ${PROJECT_NAME} http://${CHARTMUSEUM_NAME}:8080/
-                              helm repo update
-                            '''
-                        script {
-                            if(params.STAGE_CHOICE == "dev"){
-                                sh 'helm upgrade --install test ${PROJECT_NAME}/phpmysqlcrud -n ot-onboarding-dev --version ${HELM_CHART_VERSION}'
-                            }else if (params.STAGE_CHOICE == "prod") {
-                                sh 'helm upgrade --install test ${PROJECT_NAME}/phpmysqlcrud -n ot-onboarding-prod --version ${HELM_CHART_VERSION}'
-                            }
+        container(name: 'helm'){
+            stage('Add chartmuseum') {
+                steps {
+                    sh '''
+                      helm repo add ${PROJECT_NAME} http://${CHARTMUSEUM_NAME}:8080/
+                      helm repo update
+                    '''
+                }
+            }
+            stage {
+                steps {
+                    script {
+                        if(params.ENV_CHOICE == "prod"){
+                            sh 'helm upgrade --install test ${PROJECT_NAME}/pythonapp -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
+                        }else if (params.ENV_CHOICE == "dev") {
+                            sh 'helm upgrade --install test ${PROJECT_NAME}/pythonapp -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
                         }
                     }
+                        
                 }
             }          
         }
