@@ -6,23 +6,24 @@
 
 pipeline {
     agent {
-        kubernetes {
-            yaml """
-              kind: Pod
-              metadata:
-                labels:
-                    label: somelabel
-              spec:
-                containers:
-                - name: helm
-                  image: panzouh/helm:3.7.1
-                  imagePullPolicy: Always 
-                  command:
-                  - sleep
-                  args:
-                  - 9999999
-                """
-        }
+//        kubernetes {
+//            yaml """
+//              kind: Pod
+//              metadata:
+//                labels:
+//                    label: somelabel
+//              spec:
+//                containers:
+//                - name: helm
+//                  image: panzouh/helm:3.7.1
+//                  imagePullPolicy: Always 
+//                  command:
+//                  - sleep
+//                  args:
+//                  - 9999999
+//                """
+//        }
+label 'helm'
     }    
 //    agent {	
 //        kubernetes {
