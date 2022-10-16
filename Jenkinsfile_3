@@ -8,6 +8,7 @@ pipeline {
     agent {
         kubernetes {
             yaml """
+
                 - name: helm
                   image: panzouh/helm:3.7.1
                   imagePullPolicy: Always 
