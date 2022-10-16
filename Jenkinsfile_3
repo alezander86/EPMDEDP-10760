@@ -33,6 +33,7 @@ pipeline {
             stage('Add chartmuseum') {
                 steps {
                     sh '''
+                      hostname
                       helm repo add ${PROJECT_NAME} http://${CHARTMUSEUM_NAME}:8080/
                       helm repo update
                       helm repo list
