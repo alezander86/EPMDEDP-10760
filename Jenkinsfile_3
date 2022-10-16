@@ -25,9 +25,9 @@ pipeline {
         }
     }    
     stages {
-        container(name: 'helm'){
-            stage('Add chartmuseum') {
-                steps {
+        stage('Add chartmuseum') {
+            steps {
+                container(name: 'helm'){
                     sh '''
                       hostname
                       helm repo add ${PROJECT_NAME} http://${CHARTMUSEUM_NAME}:8080/
