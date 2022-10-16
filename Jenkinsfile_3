@@ -1,7 +1,9 @@
     properties([parameters([choice(choices: ['prod', 'dev'], name: 'ENV_CHOICE'),
                             string(defaultValue: '1.0.0', name: 'HELM_CHART_VERSION'),
                             string(defaultValue: 'chartmuseum', name: 'CHARTMUSEUM_NAME'),
-                            string(defaultValue: 'pythonapp', name: 'PROJECT_NAME')
+                            string(defaultValue: 'pythonapp', name: 'PROJECT_NAME'),
+                            string(defaultValue: 'pythonapp', name: 'NAME')
+
                ])])
 
 pipeline {
@@ -37,9 +39,9 @@ pipeline {
                     '''
                     script {
                         if(params.ENV_CHOICE == "prod"){
-                            sh 'helm upgrade --install test ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
+                            sh 'helm upgrade --install ${NAME} ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
                         }else if (params.ENV_CHOICE == "dev") {
-                            sh 'helm upgrade --install test ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
+                            sh 'helm upgrade --install ${NAME} ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
                         }
                     }
                 }
