@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: python_app
+  name: pythonapp
 spec:
   replicas: 1
   strategy:
@@ -11,14 +11,14 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: python_app
+      app: pythonapp
   template: 
     metadata:
       labels:
-        app: python_app
+        app: pythonapp
     spec:
       containers:
-      - name: python_app
+      - name: pythonapp
 #        image: "{{ .Values.image.repo}}/{{ .Values.image.name}}:{{ .Chart.AppVersion }}"
         image: "alezander/python_app:1.10.2"
         ports:

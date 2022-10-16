@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: python_app
+  name: pythonapp
 spec:
   type: ClusterIP
   ports:
     - port: 5000
       targetPort: 8020
   selector:
-    app: python_app
+    app: pythonapp
