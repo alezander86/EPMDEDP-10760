@@ -11,7 +11,7 @@ pipeline {
               kind: Pod
               metadata:
                 labels:
-                    inheritFrom: somelabel
+                    label: somelabel
               spec:
                 containers:
                 - name: helm
@@ -24,7 +24,11 @@ pipeline {
                 """
         }
     }    
-    agent {inheritFrom 'somelabel'}
+    agent {	
+        kubernetes {
+		    label 'somelabel'
+        }
+    }
     stages {
             stage('Add chartmuseum') {
                 steps {
