@@ -62,7 +62,7 @@ pipeline {
                               ls -la
                               helm repo add chartmuseum http://chartmuseum:8080/
                               helm repo list
-                              helm cm-push pythonapp/ --version="${image_tag}" chartmuseum
+                              helm cm-push python_app/ --version="${image_tag}" chartmuseum
                               helm repo update
                               helm search repo chartmuseum
                           '''
