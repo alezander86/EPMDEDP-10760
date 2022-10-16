@@ -49,7 +49,7 @@ pipeline {
             steps {
                 container(name: 'kaniko', shell: '/busybox/sh') {
                     sh '''
-                      /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${IMAGE_TAG}
+                      /kaniko/executor --context `pwd` --destination alezander/pythonapp:latest --destination alezander/pythonapp:${IMAGE_TAG}
                     '''
                 }
             }
