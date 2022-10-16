@@ -1,0 +1,41 @@
+    properties(
+        [parameters([choice(choices: ['prod', 'dev'], name: 'ENV_CHOICE'),
+                    string(defaultValue: '1.0.0', name: 'HELM_CHART_VERSION'),
+                    string(defaultValue: 'chartmuseum', name: 'CHARTMUSEUM_NAME'),
+                    string(defaultValue: 'pythonapp', name: 'PROJECT_NAME')
+        ])])
+
+pipeline {
+    agent {
+        kubernetes {
+            yaml """
+                - name: helm
+                  image: panzouh/helm:3.7.1
+                  imagePullPolicy: Always 
+                  command:
+                  - sleep
+                  args:
+                  - 9999999
+                """
+    stages {
+        stage('test') {
+            steps {
+                container(name: 'helm'){
+                    dir('helm'){
+                            sh '''
+                              helm repo add ${PROJECT_NAME} http://${CHARTMUSEUM_NAME}:8080/
+                              helm repo update
+                            '''
+                        script {
+                            if(params.STAGE_CHOICE == "dev"){
+                                sh 'helm upgrade --install test ${PROJECT_NAME}/phpmysqlcrud -n ot-onboarding-dev --version ${HELM_CHART_VERSION}'
+                            }else if (params.STAGE_CHOICE == "prod") {
+                                sh 'helm upgrade --install test ${PROJECT_NAME}/phpmysqlcrud -n ot-onboarding-prod --version ${HELM_CHART_VERSION}'
+                            }
+                        }
+                    }
+                }
+            }          
+        }
+    }
+}

@@ -49,7 +49,6 @@ pipeline {
             steps {
                 container(name: 'kaniko', shell: '/busybox/sh') {
                     sh '''
-                      ls -la
                       /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${IMAGE_TAG}
                     '''
                 }
@@ -59,10 +58,8 @@ pipeline {
             steps {
                 container(name: 'helm'){
                       git branch: 'main', url: 'https://github.com/alezander86/EPMDEDP-10760.git'
-                      sh 'ls -la'
                       dir('helm'){
                           sh '''
-                              ls -la
                               helm repo add ${CHARTMUSEUM_NAME} http://${CHARTMUSEUM_NAME}:8080/
                               helm repo list
                               helm cm-push pythonapp/ --version="${HELM_CHART_VERSION}" ${CHARTMUSEUM_NAME}
