@@ -24,11 +24,11 @@ pipeline {
                 """
         }
     }    
-    agent {	
-        kubernetes {
-		    label 'somelabel'
-        }
-    }
+//    agent {	
+//        kubernetes {
+//		    label 'somelabel'
+//        }
+//    }
     stages {
             stage('Add chartmuseum') {
                 steps {
