@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   name: pythonapp
 spec:
-  replicas: {{ if eq .Release.Namespace "ms-onboarding-dev" }} {{ .Values.replicas.dev }}
-            {{ else if eq .Release.Namespace "ms-onboarding-prod" }} {{ .Values.replicas.prod }}  {{ end }}
+  replicas: {{ if eq .Release.Namespace "ot-onboarding-dev" }} {{ .Values.replicas.dev }}
+            {{ else if eq .Release.Namespace "ot-onboarding-prod" }} {{ .Values.replicas.prod }}  {{ end }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
