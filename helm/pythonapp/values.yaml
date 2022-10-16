@@ -1,5 +1,6 @@
 image:
   repo: alezander
   name: pythonapp
-  version: 1.0.0
-replicas: 1
+replicas: 
+  prod: 3
+  dev: 1  

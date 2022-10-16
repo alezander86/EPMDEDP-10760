@@ -1,9 +1,10 @@
-apiVersion: apps/v1
+.apiVersion: app/v1
 kind: Deployment
 metadata:
   name: pythonapp
 spec:
-  replicas: 1
+  replicas: {{ if eq .Release.Namespace "ms-onboarding-dev" }} {{ .Values.replicas.dev }}
+            {{ else if eq .Release.Namespace "ms-onboarding-prod" }} {{ .Values.replicas.prod }}  {{ end }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -19,8 +20,7 @@ spec:
     spec:
       containers:
       - name: pythonapp
-#        image: "{{ .Values.image.repo}}/{{ .Values.image.name}}:{{ .Chart.AppVersion }}"
-        image: "alezander/python_app:1.10.2"
+        image: "{{ .Values.image.repo}}/{{ .Values.image.name}}:{{ .Chart.AppVersion }}"
         ports:
           - name: http-port
             containerPort: 5000

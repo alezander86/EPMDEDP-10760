@@ -1,4 +1,7 @@
-properties([parameters([string(defaultValue: '1.0.0', name: 'image_tag')])])
+properties([parameters([string(defaultValue: '1.0.0', name: 'IMAGE_TAG'), 
+                        string(defaultValue: '1.0.0', name: 'HELM_CHART_VERSION'),
+                        string(defaultValue: 'chartmuseum', name: 'CHARTMUSEUM_NAME')
+          ])])
 
 pipeline {
     agent {
@@ -47,7 +50,7 @@ pipeline {
                 container(name: 'kaniko', shell: '/busybox/sh') {
                     sh '''
                       ls -la
-                      /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${image_tag}
+                      /kaniko/executor --context `pwd` --destination alezander/python_app:latest --destination alezander/python_app:${IMAGE_TAG}
                     '''
                 }
             }
@@ -60,9 +63,9 @@ pipeline {
                       dir('helm'){
                           sh '''
                               ls -la
-                              helm repo add chartmuseum http://chartmuseum:8080/
+                              helm repo add ${CHARTMUSEUM_NAME} http://${CHARTMUSEUM_NAME}:8080/
                               helm repo list
-                              helm cm-push pythonapp/ --version="${image_tag}" chartmuseum
+                              helm cm-push pythonapp/ --version="${HELM_CHART_VERSION}" ${CHARTMUSEUM_NAME}
                               helm repo update
                               helm search repo chartmuseum
                           '''
