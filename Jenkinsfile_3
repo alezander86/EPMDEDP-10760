@@ -9,6 +9,9 @@ pipeline {
         kubernetes {
             yaml """
               kind: Pod
+              metadata:
+                labels:
+                    label: helm
               spec:
                 containers:
                 - name: helm
@@ -21,6 +24,7 @@ pipeline {
                 """
         }
     }    
+    agent {label 'helm'}
     stages {
             stage('Add chartmuseum') {
                 steps {
