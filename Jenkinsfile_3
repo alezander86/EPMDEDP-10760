@@ -21,6 +21,7 @@ pipeline {
                   - sleep
                   args:
                   - 9999999
+                serviceAccount: jenkins-helm-service-account
                 """
         }
     }    
