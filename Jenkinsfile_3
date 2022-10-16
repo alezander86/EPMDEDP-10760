@@ -16,6 +16,8 @@ pipeline {
                   args:
                   - 9999999
                 """
+        }
+    }    
     stages {
         container(name: 'helm'){
             stage('Add chartmuseum') {
@@ -23,10 +25,11 @@ pipeline {
                     sh '''
                       helm repo add ${PROJECT_NAME} http://${CHARTMUSEUM_NAME}:8080/
                       helm repo update
+                      helm repo list
                     '''
                 }
             }
-            stage {
+            stage('Helmchart') {
                 steps {
                     script {
                         if(params.ENV_CHOICE == "prod"){
