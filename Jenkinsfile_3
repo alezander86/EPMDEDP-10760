@@ -35,7 +35,6 @@ pipeline {
                             sh 'helm upgrade --install test ${PROJECT_NAME}/pythonapp -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
                         }
                     }
-                        
                 }
             }          
         }
