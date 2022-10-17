@@ -1,6 +1,7 @@
 properties([parameters([string(defaultValue: '1.0.0', name: 'IMAGE_TAG'), 
                         string(defaultValue: '1.0.0', name: 'HELM_CHART_VERSION'),
-                        string(defaultValue: 'chartmuseum', name: 'CHARTMUSEUM_NAME')
+                        string(defaultValue: 'chartmuseum', name: 'CHARTMUSEUM_NAME'),
+                        string(defaultValue: 'pythonapp', name: 'PROJECT_NAME')
           ])])
 
 pipeline {
@@ -62,7 +63,7 @@ pipeline {
                           sh '''
                               helm repo add ${CHARTMUSEUM_NAME} http://${CHARTMUSEUM_NAME}:8080/
                               helm repo list
-                              helm cm-push pythonapp/ --version="${HELM_CHART_VERSION}" ${CHARTMUSEUM_NAME}
+                              helm cm-push ${PROJECT_NAME}/ --app-version "${IMAGE_VERSION}" --version="${HELM_CHART_VERSION}"  ${CHARTMUSEUM_NAME}
                               helm repo update
                               helm search repo chartmuseum
                           '''
