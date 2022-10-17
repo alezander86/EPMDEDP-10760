@@ -63,7 +63,7 @@ pipeline {
                           sh '''
                               helm repo add ${CHARTMUSEUM_NAME} http://${CHARTMUSEUM_NAME}:8080/
                               helm repo list
-                              helm cm-push ${PROJECT_NAME}/ --app-version="${IMAGE_VERSION}" --version="${HELM_CHART_VERSION}"  ${CHARTMUSEUM_NAME}
+                              helm cm-push ${PROJECT_NAME}/ --app-version="${IMAGE_TAG}" --version="${HELM_CHART_VERSION}"  ${CHARTMUSEUM_NAME}
                               helm repo update
                               helm search repo chartmuseum
                           '''
