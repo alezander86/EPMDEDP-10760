@@ -70,11 +70,6 @@ pipeline {
                       }
                 }
             }  
-            post {
-                success {
-                    echo 'I succeeded! --chartname=${PROJECT_NAME} --app-version="${IMAGE_TAG}" --version="${HELM_CHART_VERSION}" '
-                }     
-            }   
         }
     }
 }
