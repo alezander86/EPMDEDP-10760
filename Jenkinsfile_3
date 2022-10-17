@@ -34,15 +34,16 @@ pipeline {
                     sh '''
                       helm repo add ${PROJECT_NAME} http://${CHARTMUSEUM_NAME}:8080/
                       helm repo update
+                      sh 'helm upgrade --install ${NAME} ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
                     '''
-                    script {
+//                    script {
 //                        if(params.ENV_CHOICE == "prod"){
-                            sh 'helm upgrade --install ${NAME} ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
-                            sh 'kubectl get secrets -n ot-onboarding-${ENV_CHOICE}'
+//                            sh 'helm upgrade --install ${NAME} ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
+//                            sh 'kubectl get secrets -n ot-onboarding-${ENV_CHOICE}'
 //                        }else if (params.ENV_CHOICE == "dev") {
 //                            sh 'helm upgrade --install ${NAME} ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}'
 //                        }
-                    }
+//                    }
                 }
             }          
         }
