@@ -34,7 +34,7 @@ pipeline {
                     sh '''
                       helm repo add ${PROJECT_NAME} http://${CHARTMUSEUM_NAME}:8080/
                       helm repo update
-                      helm upgrade --install ${NAME} ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}
+                      helm upgrade --install --atomic ${NAME} ${PROJECT_NAME}/${PROJECT_NAME} -n ot-onboarding-${ENV_CHOICE} --version ${HELM_CHART_VERSION}
                     '''
                 }
             }          
